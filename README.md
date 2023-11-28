@@ -1,73 +1,51 @@
-# Smooth Parallax
+# Pax
 
-[![npm version](https://badge.fury.io/js/smooth-parallax.svg)](https://badge.fury.io/js/smooth-parallax)
-[![DragsterJS gzip size](http://img.badgesize.io/https://raw.githubusercontent.com/diegoversiani/smooth-parallax/master/dist/smooth-parallax.min.js?compression=gzip
-)](https://raw.githubusercontent.com/diegoversiani/smooth-parallax/master/dist/smooth-parallax.min.js)
+Is a free parallax script base on Smooth Parallax by: https://github.com/diegoversiani/smooth-parallax
+Parallax that doesn't suck! Parallax everything!
+In this new version we have also:
 
-Parallax that doesn't suck! No jQuery required, just plain 'ol javascript.
+- background parallax animation
+- css class system to set the effect
 
-Smooth Parallax makes it easy to move objects when you scroll, being it images, divs or what-have-you. Use it to add that background or foreground parallax effect to your website or create a [moving scene with a hippie van](https://diegoversiani.me/smooth-parallax/) :)
+No jQuery required, just plain 'ol javascript.
+
+Smooth Parallax makes it easy to move objects when you scroll, being it images, divs or what-have-you. Use it to add that background or foreground parallax effect to your website or create amazing effects.
 
 
-__Enjoy using Smooth Parallax?__
 
-If you enjoy using Smooth Parallax and want to say thanks, you can leave me a small tip.
-All payments are securely handled through [PayPal](https://paypal.com).
 
-<a href='https://ko-fi.com/A0212ZQ' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=a' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ## Installation
 
 Setting up is pretty straight-forward. Just download the script from __dist__ folder and include it in your HTML:
 
 ```html
-<script type="text/javascript" src="path/to/smooth-parallax.min.js"></script>
+<script type="text/javascript" src="path/to/pax.min.js"></script>
 ```
-
-Smooth Parallax also supports AMD / CommonJS
-
-```js
-// AMD
-require(["path/to/smooth-parallax"], function(SmoothParallax) {});
-
-// CommonJS
-var SmoothParallax = require("smooth-parallax");
-```
-
-### NPM / Bower
-
-Smooth Parallax is also available on NPM and Bower:
-
-```sh
-npm install smooth-parallax      # npm
-bower install smooth-parallax    # bower
-```
-
-## Basic Usage
 
 __Init__
 
-Just call `SmoothParallax.init()` to get objects moving and configure elements movement.
+Just call `Pax.init()` to get objects moving and configure elements movement.
 
 ```html
 <script type="text/javascript">
   window.addEventListener("load", function () {
-    SmoothParallax.init();
+    Pax.init();
   });
 </script>
 ```
 
-Smooth Parallax will automatically look for all objects with the attribute `smooth-parallax` (ie.: `<img src="images/hippie-van.png" smooth-parallax="">`).
+Smooth Parallax will automatically look for all objects with the css class `pax` (ie.: `<img src="images/hippie-van.png" class="pax">`).
 
 __Configure elements movement__
 
-You'll also have to set at least one more attribute `start-position` or `end-position`, see options at [standard options](#standard-options).
+You'll also have to set at least one more css class `start--` or `end--`, see options at [standard options](#standard-options).
 
 ## Standard Options
 
 __Global Options__
 
-These options are passed to the `init` function when starting Smooth Parallax.
+These options are passed to the `init` function when starting Pax.
 
 - `basePercentageOn` Set how you want to track scroll percentage:
     - `containerVisibility` __default__: scroll percentage for each moving object is calculated only when the element's container is visible in the viewport. This prevents objects from moving while not visible.
@@ -75,64 +53,28 @@ These options are passed to the `init` function when starting Smooth Parallax.
 
 __Elements Options__
 
-These options are passed as html attributes to the moving elements and define how that element movement behaves.
+These options are passed via css class after the double dash -- we have the value to the moving elements and define how that element movement behaves.
 
-All percentage values are in decimal form, ie.: `1 = 100%`. You can also set values greater than 1 and smaller than 0, ie.: `-0.5 = -50%` or `1.25 = 125%`.
+All percentage values are in decimal form, ie.: `1 = 100%`. You can also set values greater than 1 and smaller than 0, ie.: `-0.5 = -50%` or `1.25 = 125%`. Example `class="pax start--0  end--1 startx--0.5  bg--0.3"`
 
-- `start-movement` - define at what scroll percentage to start moving the object. Default value is `0.0`;
-- `end-movement` - define at what scroll percentage to stop moving the object. Default value is `1.0`.
-- `start-position-x` - define the horizontal start position of the element in percentage of its the base-size (see option below).
-- `start-position-y` - define the vertical start position of the element in percentage of its the base-size (see option below).
-- `end-position-x` - define the horizontal end position of the element in percentage of its the base-size (see option below).
-- `end-position-y` - define the vertical end position of the element in percentage of its the base-size (see option below).
+- `start--` - define at what scroll percentage to start moving the object. Default value is `0.0`;
+- `end--` - define at what scroll percentage to stop moving the object. Default value is `1.0`.
+- `startx` - define the horizontal start position of the element in percentage of its the base-size (see option below).
+- `starty` - define the vertical start position of the element in percentage of its the base-size (see option below).
+- `endx` - define the horizontal end position of the element in percentage of its the base-size (see option below).
+- `endy` - define the vertical end position of the element in percentage of its the base-size (see option below).
 - `container` - change the elements container element user to calculate its position, default is moving element's parent node.
-- `base-size` - define how to calculate the base size of the movement, used to calculate the target position.
+- `basesize` - define how to calculate the base size of the movement, used to calculate the target position.
     - `elementSize`: calculate based on the element size itself.
     - `containerSize`: calculate based on the elements container size.
+- `bg--` - add a background parallax animation to the elemente, the element need to have a background image to work.
 
 ## Contributing to Development
 
-This isn't a large project by any means, but I'm definitely welcome to any pull requests and contributions.
+This is base on Diego Versani Smooth Parallax by: https://github.com/diegoversiani/smooth-parallax.
 
-You can get your copy up and running for development quickly by cloning the repo and running [npm](http://npmjs.org/):
-
-```
-$ npm install
-```
-
-This will install all the necessary tools for compiling minified files.
 
 ## Change Log
-
-__1.1.2__
-
-- Improvement: Extend public method `getScrollPercent` to return scroll percentage for elements.
-- Fix: issue calculating element's size for SVG on Firefox
-- Fix: position calculation to 2 decimals precision for better performance.
-- Fix: scroll percent calculation based on `containerSize`.
-
-__1.1.1__
-
-- Fix npm package.json info.
-
-__1.1.0__
-
-__Upgrade Notice:__ This version changes how Smooth Parallax is initiated and how the elements options are set.
-
-- Converted script into a javascript plugin.
-- Renamed html attributes:
-    - `data-smooth-parallax-element` > `smooth-parallax`
-    - `data-start-percent` > `start-movement`
-    - `data-end-percent` > `end-movement`
-    - `data-start-x` > `start-position-x`
-    - `data-start-y` > `start-position-y`
-    - `data-end-x` > `end-position-x`
-    - `data-end-y` > `end-position-y`
-    - `data-smooth-parallax-element` > `smooth-parallax`
-    - `data-container-id` > `container`.
-- Changed element option __container__ expected value to be a valid css selector instead of element id.
-- Added element option __base-size__.
-- Added global option __pageScroll__.
 
 __1.0.0__
 
@@ -144,4 +86,4 @@ Licensed under MIT. Enjoy.
 
 ## Acknowledgement
 
-Smooth Parallax was created by [Diego Versiani](https://diegoversiani.me) for a better Parallax Effect.
+Pax was created by [Andrea Marchetti](https://marchettidesign.net) based on Smooth Parallax by [Diego Versiani](https://diegoversiani.me) we work for a better Parallax Effect.

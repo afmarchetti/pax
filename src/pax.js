@@ -1,29 +1,27 @@
 /**
- * SmoothParallax 1.1.2
+ * Pax 1.0.0
  * 
- * File smooth-parallax.js.
+ * File pax.js.
  *
- * Yet another parallax script. Smooth parallax is intended to make it a lot easier to
+ * Yet another parallax script. Pax is intended to make it a lot easier to
  * make objects move vertically or horizontally when scroll, being it images,
  * divs or what-have-you. Use this script to add background or foreground parallax
  * effect to your website.
  *
- * Website: https://diegoversiani.me/smooth-parallax
- * Github: https://github.com/diegoversiani/smooth-parallax
+ * Website: https://www.marchettidesign.net
+ * Github: https://github.com/afmarchetti/pax
  *
- * Author: Diego Versiani
- * Contact: https://diegoversiani.me/
- * 
- * Based on the work of:
- * Rachel Smith: https://codepen.io/rachsmith/post/how-to-move-elements-on-scroll-in-a-way-that-doesn-t-suck-too-bad
+ * Based on Diego Versani Smooth Parallax: https://github.com/diegoversiani/smooth-parallax
+ * And the work of Rachel Smith: https://codepen.io/rachsmith/post/how-to-move-elements-on-scroll-in-a-way-that-doesn-t-suck-too-bad
  */
+
 (function (root, factory) {
   if ( typeof define === 'function' && define.amd ) {
     define([], factory(root));
   } else if ( typeof exports === 'object' ) {
     module.exports = factory(root);
   } else {
-    root.SmoothParallax = factory(root);
+    root.Pax = factory(root);
   }
 })(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
 
@@ -33,19 +31,19 @@
   // Variables
   //
 
-  var window = root; // Map window to root to avoid confusion
-  var _container;
-  var _width, _height, _scrollHeight, _viewPortHeight;
-  var _scrollPercent = 0;
-  var _scrollOffset = 0;
-  var _movingElements = [];
-  var _positions = [];
-  var _basePercentageOnOptions = [ 'containerVisibility', 'pageScroll' ];
-  var _settings;
-  var publicMethods = {}; // Placeholder for public methods
+  let window = root; // Map window to root to avoid confusion
+  let _container;
+  let _height, _viewPortHeight;
+  let _scrollPercent = 0;
+  let _scrollOffset = 0;
+  let _movingElements = [];
+  let _positions = [];
+  let _basePercentageOnOptions = [ 'containerVisibility', 'pageScroll' ];
+  let _settings;
+  let publicMethods = {}; // Placeholder for public methods
 
   // Default settings
-  var defaults = {
+  let defaults = {
     basePercentageOn: 'containerVisibility', // See `_basePercentageOnOptions` for more options
     decimalPrecision: 2
   };
@@ -62,12 +60,12 @@
    * @param {Object}   objects  The objects to merge together
    * @returns {Object}          Merged values of defaults and options
    */
-  var extend = function () {
+  let extend = function () {
     // Variables
-    var extended = {};
-    var deep = false;
-    var i = 0;
-    var length = arguments.length;
+    let extended = {};
+    let deep = false;
+    let i = 0;
+    let length = arguments.length;
 
     // Check if a deep merge
     if ( Object.prototype.toString.call( arguments[0] ) === '[object Boolean]' ) {
@@ -76,8 +74,8 @@
     }
 
     // Merge the object into the extended object
-    var merge = function (obj) {
-      for ( var prop in obj ) {
+    let merge = function (obj) {
+      for ( let prop in obj ) {
         if ( Object.prototype.hasOwnProperty.call( obj, prop ) ) {
           // If deep merge and property is an object, merge properties
           if ( deep && Object.prototype.toString.call(obj[prop]) === '[object Object]' ) {
@@ -91,7 +89,7 @@
 
     // Loop through each object and conduct a merge
     for ( ; i < length; i++ ) {
-      var obj = arguments[i];
+      let obj = arguments[i];
       merge(obj);
     }
 
@@ -99,13 +97,12 @@
   };
 
 
-
   /**
    * Get movable element container
    * @private
    */
-  var getElementContainer = function ( element ) {
-    var containerSelector = element.getAttribute( 'container' );
+  let getElementContainer = function ( element ) {
+    let containerSelector = element.getAttribute( 'container' );
     _container = element.parentNode;
 
     if ( containerSelector != '' && document.querySelector( containerSelector ) ) {
@@ -116,13 +113,12 @@
   };
 
 
-
   /**
    * Calculate page percent scrolled.
    * @private
    */
-  var calculatePageScrollPercent = function () {
-    var documentElement = document.documentElement || document.body;
+  let calculatePageScrollPercent = function () {
+    let documentElement = document.documentElement || document.body;
     _height = documentElement.scrollHeight;
     _scrollOffset = window.pageYOffset || documentElement.scrollTop;
     return _scrollOffset / ( _height - documentElement.clientHeight );
@@ -134,7 +130,7 @@
    * Calculate variables used to determine elements position
    * @private
    */
-  var calculatePercent = function ( positionData ) {
+  let calculatePercent = function ( positionData ) {
     _viewPortHeight = window.innerHeight;
 
     // Based on `containerVisibility`
@@ -164,8 +160,8 @@
    * Get position data object for the element.
    * @returns {Object} Position data object for element or false if not found.
    */
-  var getPositionDataByElement = function ( el ) {
-    for (var i = 0; i < _positions.length; i++) {
+  let getPositionDataByElement = function ( el ) {
+    for (let i = 0; i < _positions.length; i++) {
       if ( _positions[i].element == el ) {
         return _positions[i];
       }
@@ -181,35 +177,54 @@
    * Initializes positions for each moving element.
    * @private
    */
-  var initializeMovingElementsPosition = function () {
-    var startPercent,
+  let initializeMovingElementsPosition = function () {
+    let startPercent,
         startX,
         startY,
         endPercent,
         endX,
         endY,
         baseSizeOn,
+        bgParallaxInfo,
         baseSizeOnOptions = [ 'elementsize', 'containerSize' ];
 
-    _movingElements = document.querySelectorAll('[smooth-parallax]');
+    _movingElements = document.querySelectorAll('.pax'); // activation css class
+	  
+    for (let i = 0; i < _movingElements.length; i++) {
+		
 
-    for (var i = 0; i < _movingElements.length; i++) {
-      startPercent = parseFloat(_movingElements[i].getAttribute( 'start-movement' )) || 0;
-      startX = parseFloat(_movingElements[i].getAttribute( 'start-position-x' )) || 0;
-      startY = parseFloat(_movingElements[i].getAttribute( 'start-position-y' )) || 0;
-      endPercent = parseFloat(_movingElements[i].getAttribute( 'end-movement' )) || 1;
-      endX = parseFloat(_movingElements[i].getAttribute( 'end-position-x' )) || 0;
-      endY = parseFloat(_movingElements[i].getAttribute( 'end-position-y' )) || 0;
-      baseSizeOn = _movingElements[i].getAttribute( 'base-size' );
+		
+	const myArray = Array.from(_movingElements[i].classList);
+    
+    //get css value
+  	const startMovement = myArray.find((string) => string.startsWith("start--"));
+		const endMovement = myArray.find((string) => string.startsWith("end--"));
+    const startPositionX = myArray.find((string) => string.startsWith("startx--"));
+    const startPositionY = myArray.find((string) => string.startsWith("starty--"));
+    const endPositionX = myArray.find((string) => string.startsWith("endx--"));
+    const endPositionY = myArray.find((string) => string.startsWith("endy--"));
+    const baseSize = myArray.find((string) => string.startsWith("basesize--"));
+    const bgParallax = myArray.find((string) => string.startsWith("bg--"));
+
+      //extract css value
+      startPercent = startMovement ? parseFloat(startMovement.split("--")[1]) : 0;
+      startX = startPositionX ? parseFloat(startPositionX.split("--")[1]) : 0;
+      startY = startPositionY ? parseFloat(startPositionY.split("--")[1]) : 0;
+      endPercent =  endMovement ? parseFloat(endMovement.split("--")[1]) : 0;
+      endX = endPositionX ? parseFloat(endPositionX.split("--")[1]) : 0;
+      endY = endPositionY ? parseFloat(endPositionY.split("--")[1]) : 0;
+      baseSizeOn = baseSize ? parseFloat(baseSize.split("--")[1]) : 0;
+      bgParallaxInfo = bgParallax ? parseFloat(bgParallax.split("--")[1]) : 0;
 
       if ( baseSizeOnOptions.indexOf( baseSizeOn ) == -1 ) {
         baseSizeOn = 'elementSize'; // Default value
       }
 
-      var elementPosition = {
+      let elementPosition = {
         element: _movingElements[i],
         container: getElementContainer( _movingElements[i] ),
         baseSizeOn: baseSizeOn,
+        bgParallaxInfo : bgParallaxInfo,
         start: {
           percent: startPercent,
           x: startX,
@@ -237,12 +252,12 @@
    * Updates moving elements position.
    * @private
    */
-  var updateElementsPosition = function () {
-    for (var i = 0; i < _movingElements.length; i++) {
-      var p = _positions[i],
+  let updateElementsPosition = function () {
+    for (let i = 0; i < _movingElements.length; i++) {
+      let p = _positions[i],
           baseWidth,
           baseHeight,
-          transformValue;
+          bgParallaxPos;
 
       // Try get element's size with `scrollWidth` and `scrollHeight`
       // otherwise use `getComputedStyle` which is more expensive
@@ -289,6 +304,18 @@
 
       // update element style
       _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0)';
+      
+      //update background (Bg Parallax)
+      if(p.bgParallaxInfo){
+  
+        bgParallaxPos = p.bgParallaxInfo * _scrollPercent * 1000; // change position star when element enter and sto 
+        bgParallaxPos = parseFloat( bgParallaxPos.toFixed( _settings.decimalPrecision ) ); // Round to decimal precision to prevent for perfomance
+        
+        _movingElements[i].style.backgroundPosition = 'center '+ '-' + bgParallaxPos + 'px'; // set backgorund position
+        _movingElements[i].style.backgroundSize= ' auto ' +' 1'+ p.bgParallaxInfo * 100+'vh'; // set backgorund height size
+
+      }      
+
     }
   };
 
@@ -296,7 +323,7 @@
    * Keep updating elements position infinitelly.
    * @private
    */
-  var loopUpdatePositions = function () {
+  let loopUpdatePositions = function () {
     updateElementsPosition();
     requestAnimationFrame( loopUpdatePositions );
   };
@@ -305,8 +332,8 @@
    * Keep updating elements position infinitelly.
    * @private
    */
-  var isSupported = function () {
-    var supported = true;
+  let isSupported = function () {
+    let supported = true;
 
     // Test basePercentageOn settings
     if ( _basePercentageOnOptions.indexOf( _settings.basePercentageOn ) == -1 ) {
@@ -349,11 +376,11 @@
 
     // Find element
     // Return false if not found
-    var el = document.querySelector( selector );
+    let el = document.querySelector( selector );
     if ( el == null ) return false;
 
     // Calculate element scroll percent
-    var positionData = getPositionDataByElement( el );
+    let positionData = getPositionDataByElement( el );
     if ( positionData ) {
       calculatePercent( positionData );
       return _scrollPercent;
@@ -369,4 +396,8 @@
   //
   return publicMethods;
 
+});
+
+window.addEventListener("load", function () {
+    Pax.init({ basePercentageOn: "containerVisibility" });
 });
