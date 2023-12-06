@@ -192,19 +192,17 @@
 	  
     for (let i = 0; i < _movingElements.length; i++) {
 		
-
-		
-	const myArray = Array.from(_movingElements[i].classList);
-    
-    //get css value
-  	const startMovement = myArray.find((string) => string.startsWith("start--"));
-		const endMovement = myArray.find((string) => string.startsWith("end--"));
-    const startPositionX = myArray.find((string) => string.startsWith("startx--"));
-    const startPositionY = myArray.find((string) => string.startsWith("starty--"));
-    const endPositionX = myArray.find((string) => string.startsWith("endx--"));
-    const endPositionY = myArray.find((string) => string.startsWith("endy--"));
-    const baseSize = myArray.find((string) => string.startsWith("basesize--"));
-    const bgParallax = myArray.find((string) => string.startsWith("bg--"));
+      const myArray = Array.from(_movingElements[i].classList);
+      
+      //get css value
+      const startMovement = myArray.find((string) => string.startsWith("start--"));
+      const endMovement = myArray.find((string) => string.startsWith("end--"));
+      const startPositionX = myArray.find((string) => string.startsWith("startx--"));
+      const startPositionY = myArray.find((string) => string.startsWith("starty--"));
+      const endPositionX = myArray.find((string) => string.startsWith("endx--"));
+      const endPositionY = myArray.find((string) => string.startsWith("endy--"));
+      const baseSize = myArray.find((string) => string.startsWith("basesize--"));
+      const bgParallax = myArray.find((string) => string.startsWith("bg--"));
 
       //extract css value
       startPercent = startMovement ? parseFloat(startMovement.split("--")[1]) : 0;
@@ -213,8 +211,8 @@
       endPercent =  endMovement ? parseFloat(endMovement.split("--")[1]) : 0;
       endX = endPositionX ? parseFloat(endPositionX.split("--")[1]) : 0;
       endY = endPositionY ? parseFloat(endPositionY.split("--")[1]) : 0;
-      baseSizeOn = baseSize ? parseFloat(baseSize.split("--")[1]) : 0;
-      bgParallaxInfo = bgParallax ? parseFloat(bgParallax.split("--")[1]) : 0;
+      baseSizeOn = baseSize ? baseSize.split("--")[1] : 0;
+      bgParallaxInfo = bgParallax ? bgParallax.split("--")[1] : 0;
 
       if ( baseSizeOnOptions.indexOf( baseSizeOn ) == -1 ) {
         baseSizeOn = 'elementSize'; // Default value
@@ -301,23 +299,16 @@
       p.current.x = parseFloat( p.current.x.toFixed( _settings.decimalPrecision ) );
       p.current.y = parseFloat( p.current.y.toFixed( _settings.decimalPrecision ) );
 
-      //console.log(_movingElements[i]);
-      
-      
       //update background (Bg Parallax)
-      if(p.bgParallaxInfo == 1){
+      if(p.bgParallaxInfo == 'parallax'){
 
-        // bgParallaxPos = p.bgParallaxInfo * _scrollPercent * 1000; // change position star when element enter and sto 
-        // bgParallaxPos = parseFloat( bgParallaxPos.toFixed( _settings.decimalPrecision ) ); // Round to decimal precision to prevent for perfomance
-        
-        _movingElements[i].style.backgroundPosition = 'center ' +  (_scrollOffset / 5 - 300) + 'px '; // set backgorund position
+        _movingElements[i].style.backgroundPosition = 'center ' +  ( _scrollOffset / 5 - 300) + 'px '; // set backgorund position
         _movingElements[i].style.backgroundSize= ' auto ' +' 150vh'; // set backgorund height size
 
       }  else {
 
         // update element style
-      _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0)';
-
+        _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0)';
 
       }
 
