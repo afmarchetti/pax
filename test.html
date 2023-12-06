@@ -3,6 +3,9 @@
 <head>
   <title>Pax Test</title>
   <style type="text/css">
+    body{
+      margin: 0; padding: 0;
+    }
     .container {
       position: relative;
       width: 100%;
@@ -56,14 +59,23 @@
 </head>
 <body>
 <div class="debug"></div>
-<div class="spacer pax bg--0.8"></div>
+<!-- <p style="height:1000px">test</p> -->
+<div class="container-2" style="border: 1px solid red">
+  <div class="spacer pax bg--1"></div>
+</div>
+<p style="height:600px">test</p>
+<div class="container">
+  <div class="spacer pax bg--1"></div>
+</div>
+
 <div class="container">
   <div class="green pax basesize--containerSize start--0.1 end--0.3 endx--1">
     base-size: containerSize
   </div>
-  <div class="blue pax start--0.15 end--0.7 startx--0.5">
+  <div class="blue pax start--0.1 end--0.9 starty--0.5">
   </div>
   <div class="yellow pax start--0.2 end--0.9 endy--0.9"></div>
+  <!-- <div class="yellow pax start--0.2 end--0.9 endy--0.9"></div> -->
 </div>
 </body>
 </html>

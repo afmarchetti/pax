@@ -256,8 +256,7 @@
     for (let i = 0; i < _movingElements.length; i++) {
       let p = _positions[i],
           baseWidth,
-          baseHeight,
-          bgParallaxPos;
+          baseHeight;
 
       // Try get element's size with `scrollWidth` and `scrollHeight`
       // otherwise use `getComputedStyle` which is more expensive
@@ -302,19 +301,25 @@
       p.current.x = parseFloat( p.current.x.toFixed( _settings.decimalPrecision ) );
       p.current.y = parseFloat( p.current.y.toFixed( _settings.decimalPrecision ) );
 
-      // update element style
-      _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0)';
+      //console.log(_movingElements[i]);
+      
       
       //update background (Bg Parallax)
-      if(p.bgParallaxInfo){
-  
-        bgParallaxPos = p.bgParallaxInfo * _scrollPercent * 1000; // change position star when element enter and sto 
-        bgParallaxPos = parseFloat( bgParallaxPos.toFixed( _settings.decimalPrecision ) ); // Round to decimal precision to prevent for perfomance
-        
-        _movingElements[i].style.backgroundPosition = 'center '+ '-' + bgParallaxPos + 'px'; // set backgorund position
-        _movingElements[i].style.backgroundSize= ' auto ' +' 1'+ p.bgParallaxInfo * 100+'vh'; // set backgorund height size
+      if(p.bgParallaxInfo == 1){
 
-      }      
+        // bgParallaxPos = p.bgParallaxInfo * _scrollPercent * 1000; // change position star when element enter and sto 
+        // bgParallaxPos = parseFloat( bgParallaxPos.toFixed( _settings.decimalPrecision ) ); // Round to decimal precision to prevent for perfomance
+        
+        _movingElements[i].style.backgroundPosition = 'center ' +  (_scrollOffset / 5 - 300) + 'px '; // set backgorund position
+        _movingElements[i].style.backgroundSize= ' auto ' +' 150vh'; // set backgorund height size
+
+      }  else {
+
+        // update element style
+      _movingElements[i].style.transform = 'translate3d(' + p.current.x + 'px, ' + p.current.y + 'px, 0)';
+
+
+      }
 
     }
   };
